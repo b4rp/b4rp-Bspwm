@@ -153,7 +153,7 @@ change_wallpaper() {
     local bspwmrc_path="$HOME/.config/bspwm/bspwmrc"
     local new_wallpaper
 
-    # Asegurarse de que la carpeta de fondos exista
+    # Asegurar que la carpeta de fondos existe
     if [ ! -d "$fondos_dir" ]; then
         echo "La carpeta $fondos_dir no existe. Creándola..."
         mkdir -p "$fondos_dir"
@@ -166,12 +166,17 @@ change_wallpaper() {
 
     # Verificar si se seleccionó un fondo
     if [ -n "$new_wallpaper" ]; then
-        # Reemplazar la línea en bspwmrc
-        sed -i "s|/usr/bin/feh --bg-fill.*|/usr/bin/feh --bg-fill \"$new_wallpaper\" \&|" "$bspwmrc_path"
+        # Hacer una copia de seguridad del bspwmrc antes de modificarlo
+        cp "$bspwmrc_path" "$bspwmrc_path.bak"
+
+        # Reemplazar la línea de feh en bspwmrc
+        sed -i "/feh --bg-fill/c\feh --bg-fill \"$new_wallpaper\" &" "$bspwmrc_path"
+
         echo "Fondo de pantalla cambiado a: $new_wallpaper"
-        
-        # Reiniciar bspwm para aplicar los cambios
-        bspc wm -r
+
+        # Aplicar el cambio de inmediato sin necesidad de reiniciar bspwm
+        feh --bg-fill "$new_wallpaper"
+
     else
         echo "No se seleccionó ningún fondo de pantalla."
     fi
