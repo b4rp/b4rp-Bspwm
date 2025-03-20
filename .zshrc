@@ -161,8 +161,8 @@ change_wallpaper() {
         return
     fi
 
-    # Seleccionar un archivo dentro de la carpeta de Fondos
-    new_wallpaper=$(find "$fondos_dir" -type f \( -name "*.jpg" -o -name "*.png" \) | fzf)
+    # Seleccionar un archivo dentro de la carpeta de Fondos (incluye .jpg, .jpeg y .png)
+    new_wallpaper=$(find "$fondos_dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | fzf)
 
     # Verificar si se seleccionó un fondo
     if [ -n "$new_wallpaper" ]; then
